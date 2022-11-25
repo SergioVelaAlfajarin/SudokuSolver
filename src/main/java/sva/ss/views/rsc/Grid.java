@@ -15,23 +15,15 @@ public class Grid {
         this.squares = new Square[3][3];
 
         fillPanelWithSquares();
-
-        Arrays.stream(squares)
-                .flatMap(Arrays::stream)
-                .forEach(System.out::println);
-
-        System.out.println("imprimir pos absolutas of cells");
-
-        Position[][] pos = squares[2][2].getAbsolutePositionsOfCells();
-
-        System.out.println(Arrays.deepToString(pos));
     }
 
     private void fillPanelWithSquares() {
         for (int rows = 0; rows < 3; rows++) {
             for (int columns = 0; columns < 3; columns++) {
-                Position pos = new Position(rows, columns, "Square");
+                Position pos = new Position(rows, columns);
+
                 squares[rows][columns] = new Square(pos);
+
                 panel.add(squares[rows][columns].panel);
             }
         }
@@ -53,7 +45,11 @@ public class Grid {
     private Cell[][] getGridCells() {
         final Cell[][] holder = new Cell[9][9];
 
+        for (int i = 0; i < squares.length; i++) {
+            for (int j = 0; j < squares[i].length; j++) {
 
+            }
+        }
 
         return holder;
     }

@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Square {
-    public final Position posInGrid;
+    public final Position squarePosition;
     public final JPanel panel;
     public final Cell[][] cells;
 
     public Square(Position pos) {
         panel = new JPanel(new GridLayout(3,3));
         cells = new Cell[3][3];
-        this.posInGrid = pos;
+        this.squarePosition = pos;
 
         fillPanelWithCells();
 
@@ -25,33 +25,36 @@ public class Square {
     private void fillPanelWithCells() {
         for (int rows = 0; rows < 3; rows++) {
             for (int columns = 0; columns < 3; columns++) {
-                Position pos = new Position(rows, columns, "cell");
-                cells[rows][columns] = new Cell(pos);
+                Position cellPosInSquare = new Position(rows, columns);
+                Position cellPosInGrid = new Position(
+                        rows + (this.squarePosition.row() * 3),
+                        columns + (this.squarePosition.col() * 3)
+                );
+                cells[rows][columns] = new Cell(cellPosInSquare, cellPosInGrid);
                 panel.add(cells[rows][columns].button);
             }
         }
     }
 
-    public Position[][] getAbsolutePositionsOfCells(){
-        Position[][] holder = new Position[3][3];
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                Position cellsPos = cells[i][j].posInSquare;
 
-                holder[i][j] = new Position(
-                        cellsPos.row() * (posInGrid.row() == 0 ? 1 : posInGrid.row()),
-                        cellsPos.col() * (posInGrid.col() == 0 ? 1 : posInGrid.col()),
-                        "cell"
-                );
-            }
+
+    public Cell getCellByPos(int row, int col){
+        return getCellByPos(new Position(row, col));
+    }
+
+    public Cell getCellByPos(Position pos){
+        try{
+            return cells[pos.row()][pos.col()];
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println(e.getMessage());
+            return null;
         }
-        return holder;
     }
 
     @Override
     public String toString() {
         return "Square{" +
-                "posInGrid=" + posInGrid +
+                "posInGrid=" + squarePosition +
                 '}';
     }
 }
