@@ -1,11 +1,20 @@
 package sva.ss;
 
+import sva.ss.views.MainView;
+
 import java.util.Arrays;
 
 public class Main {
 	private static final int GRID_SIZE = 9;
 
 	public static void main(String[] args) {
+		//oldMain();
+
+		MainView mv = new MainView();
+		mv.show();
+	}
+
+	private static void oldMain() {
 		final int[][] BOARD = {
 				{0,0,0   ,0,2,0  ,4,0,0},
 				{0,8,4   ,0,0,0  ,6,0,3},
