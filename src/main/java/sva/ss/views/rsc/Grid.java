@@ -4,6 +4,7 @@ import sva.ss.solver.Position;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class Grid {
     public final JPanel panel;
@@ -14,6 +15,16 @@ public class Grid {
         this.squares = new Square[3][3];
 
         fillPanelWithSquares();
+
+        Arrays.stream(squares)
+                .flatMap(Arrays::stream)
+                .forEach(System.out::println);
+
+        System.out.println("imprimir pos absolutas of cells");
+
+        Position[][] pos = squares[2][2].getAbsolutePositionsOfCells();
+
+        System.out.println(Arrays.deepToString(pos));
     }
 
     private void fillPanelWithSquares() {
@@ -24,5 +35,26 @@ public class Grid {
                 panel.add(squares[rows][columns].panel);
             }
         }
+    }
+
+    public int[][] generateGrid(){
+        final int[][] numsGrid = new int[9][9];
+        final Cell[][] cells = getGridCells();
+
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                numsGrid[i][j] = cells[i][j].getNumber();
+            }
+        }
+
+        return numsGrid;
+    }
+
+    private Cell[][] getGridCells() {
+        final Cell[][] holder = new Cell[9][9];
+
+
+
+        return holder;
     }
 }

@@ -12,7 +12,7 @@ public class MainView {
     private final JFrame frame;
     private final Grid grid;
 
-    public MainView() { //TODO NOVA
+    public MainView() { //TODO meter menu bar
         this.frame = new JFrame("Sudoku Solver");
         this.grid = initGrid();
 
