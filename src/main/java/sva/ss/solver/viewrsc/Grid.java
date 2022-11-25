@@ -15,8 +15,6 @@ public class Grid {
         this.squares = new Square[3][3];
 
         fillPanelWithSquares();
-
-        Main.printBoard(generateGrid());
     }
 
     private void fillPanelWithSquares() {
