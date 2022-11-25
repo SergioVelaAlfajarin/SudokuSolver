@@ -1,6 +1,6 @@
-package sva.ss.views.rsc;
+package sva.ss.solver.viewrsc;
 
-import sva.ss.solver.Position;
+import sva.ss.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,8 @@ public class Grid {
         this.squares = new Square[3][3];
 
         fillPanelWithSquares();
+
+        Main.printBoard(generateGrid());
     }
 
     private void fillPanelWithSquares() {
@@ -45,12 +47,24 @@ public class Grid {
     private Cell[][] getGridCells() {
         final Cell[][] holder = new Cell[9][9];
 
-        for (int i = 0; i < squares.length; i++) {
-            for (int j = 0; j < squares[i].length; j++) {
-
+        for (int i = 0; i < Main.GRID_SIZE; i++) {
+            for (int j = 0; j < Main.GRID_SIZE; j++) {
+                holder[i][j] = getCellByAbsolutePos(new Position(i, j));
             }
         }
 
         return holder;
+    }
+
+    private Cell getCellByAbsolutePos(Position pos){
+        return Arrays.stream(squares)
+                .flatMap(Arrays::stream)
+                .flatMap(sq ->
+                        Arrays.stream(sq.cells)
+                            .flatMap(Arrays::stream)
+                )
+                .filter(cell -> cell.posInGrid.equals(pos))
+                .findFirst()
+                .orElseThrow();
     }
 }

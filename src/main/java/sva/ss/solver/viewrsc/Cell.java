@@ -1,9 +1,6 @@
-package sva.ss.views.rsc;
-
-import sva.ss.solver.Position;
+package sva.ss.solver.viewrsc;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -72,13 +69,17 @@ public class Cell {
     }
 
     public int getNumber() {
-        return Integer.parseInt(button.getText());
+        try{
+            return Integer.parseInt(button.getText());
+        }catch (NumberFormatException e){
+            return 0;
+        }
     }
 
     @Override
     public String toString() {
         return "Cell{" +
-                "posInSquare=" + posInSquare +
+                "absolutePos=" + posInGrid +
                 '}';
     }
 }

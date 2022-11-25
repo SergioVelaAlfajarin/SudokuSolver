@@ -37,7 +37,7 @@ public class Main {
 		}
 	}
 
-	private static void printBoard(int[][] board) {
+	public static void printBoard(int[][] board) {
 		for (int i = 0; i < GRID_SIZE; i++) {
 			if(i % 3 == 0 && i != 0){
 				System.out.println("---------------------");

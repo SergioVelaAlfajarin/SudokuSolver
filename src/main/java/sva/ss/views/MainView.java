@@ -1,7 +1,7 @@
 package sva.ss.views;
 
 import sva.ss.Main;
-import sva.ss.views.rsc.Grid;
+import sva.ss.solver.viewrsc.Grid;
 
 import javax.swing.*;
 

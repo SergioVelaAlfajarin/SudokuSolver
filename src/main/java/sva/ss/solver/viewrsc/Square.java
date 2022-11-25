@@ -1,6 +1,4 @@
-package sva.ss.views.rsc;
-
-import sva.ss.solver.Position;
+package sva.ss.solver.viewrsc;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,21 +31,6 @@ public class Square {
                 cells[rows][columns] = new Cell(cellPosInSquare, cellPosInGrid);
                 panel.add(cells[rows][columns].button);
             }
-        }
-    }
-
-
-
-    public Cell getCellByPos(int row, int col){
-        return getCellByPos(new Position(row, col));
-    }
-
-    public Cell getCellByPos(Position pos){
-        try{
-            return cells[pos.row()][pos.col()];
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println(e.getMessage());
-            return null;
         }
     }
 
