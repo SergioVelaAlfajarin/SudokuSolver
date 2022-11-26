@@ -110,18 +110,14 @@ public class MainView {
     private void cleanGrid(){
         Arrays.stream(grid.getGridCells())
                 .flatMap(Arrays::stream)
-                .forEach(cell -> {
-                    cell.setButtonText("");
-                });
+                .forEach(cell -> cell.setButtonText(""));
     }
 
     private void cleanSolved(){
         Arrays.stream(grid.getGridCells())
                 .flatMap(Arrays::stream)
                 .filter(Cell::isResolved)
-                .forEach(cell -> {
-                    cell.setButtonText("");
-                });
+                .forEach(cell -> cell.setButtonText(""));
     }
 
     private void changeColor(){
