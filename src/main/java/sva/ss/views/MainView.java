@@ -143,7 +143,8 @@ public class MainView {
                 grid.setCellsBySolvedBoard(board);
             }
         }catch (RuntimeException e){
-            JOptionPane.showMessageDialog(frame, "Tiempo maximo de espera superado.");
+            JOptionPane.showMessageDialog(frame, "Tiempo maximo de espera superado.\n" +
+                    "Sudoku imposible.");
         }
     }
 
