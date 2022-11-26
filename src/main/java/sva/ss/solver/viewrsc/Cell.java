@@ -21,55 +21,47 @@ public class Cell {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                setResolved(false);
-                setButtonTextColor(Color.BLACK);
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    decreaseNumber();
-                }else if (SwingUtilities.isLeftMouseButton(e)) {
-                    incrementNumber();
-                }else if(SwingUtilities.isMiddleMouseButton(e)){
-                    setButtonText("");
-                }
+                cellClicked(e);
             }
         });
     }
 
-    public void incrementNumber(){
-        int num;
-        try{
-            num = Integer.parseInt(button.getText());
-        }catch (NumberFormatException e){
-            num = 0;
+    private void cellClicked(MouseEvent e) {
+        setResolved(false);
+        setButtonTextColor(Color.BLACK);
+        if (SwingUtilities.isRightMouseButton(e)) {
+            decreaseNumber();
+        }else if (SwingUtilities.isLeftMouseButton(e)) {
+            incrementNumber();
+        }else if(SwingUtilities.isMiddleMouseButton(e)){
+            setButtonText("");
         }
-        num++;
+    }
+
+    public void incrementNumber(){
+        int num = getNumber() + 1;
         if(num == 0){
-            button.setText("");
+            setButtonText("");
             return;
         }
         if(num >= 10){
-            button.setText("");
+            setButtonText("");
             return;
         }
-        button.setText(String.valueOf(num));
+        setButtonText(num);
     }
 
     public void decreaseNumber(){
-        int num;
-        try{
-            num = Integer.parseInt(button.getText());
-        }catch (NumberFormatException e){
-            num = 0;
-        }
-        num--;
+        int num = getNumber() - 1;
         if(num == 0){
-            button.setText("");
+            setButtonText("");
             return;
         }
         if(num < 0){
-            button.setText("9");
+            setButtonText(9);
             return;
         }
-        button.setText(String.valueOf(num));
+        setButtonText(num);
     }
 
     public int getNumber() {
@@ -100,13 +92,5 @@ public class Cell {
 
     public boolean isResolved() {
         return resolved;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Cell{" +
-                "absolutePos=" + posInGrid +
-                '}';
     }
 }

@@ -5,10 +5,10 @@ import sva.ss.Main;
 public class Solver {
     public boolean keepTrying = true;
 
-    public void startSolver() {
+    public Solver() {
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(6000);
                 keepTrying = false;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -79,20 +79,5 @@ public class Solver {
         return !isNumberInRow(board,number,row) &&
                 !isNumberInColumn(board,number,col) &&
                 !isNumberInBox(board,number,row,col);
-    }
-
-    public static void printBoard(int[][] board) {
-        for (int i = 0; i < Main.GRID_SIZE; i++) {
-            if(i % 3 == 0 && i != 0){
-                System.out.println("---------------------");
-            }
-            for (int j = 0; j < Main.GRID_SIZE; j++) {
-                if(j % 3 == 0 && j != 0){
-                    System.out.print("| ");
-                }
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }

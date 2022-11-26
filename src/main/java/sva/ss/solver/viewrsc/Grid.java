@@ -22,70 +22,61 @@ public class Grid {
     }
 
     private void fillPanelWithSquares() {
-        for (int rows = 0; rows < 3; rows++) {
-            for (int columns = 0; columns < 3; columns++) {
-                Position pos = new Position(rows, columns);
-
-                squares[rows][columns] = new Square(pos);
-
-                panel.add(squares[rows][columns].panel);
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                Position squarePos = new Position(row, col);
+                squares[row][col] = new Square(squarePos);
+                panel.add(squares[row][col].panel);
             }
         }
     }
 
-    public int[][] generateGrid(){
-        final int[][] numsGrid = new int[9][9];
-        final Cell[][] cells = getGridCells();
+    public Cell[][] getGridCells() { //si esta vacio
+        if(cells != null){
+            return cells;
+        }
+        Cell[][] cellsHolder = new Cell[9][9];
+        for (int i = 0; i < Main.GRID_SIZE; i++) {
+            for (int j = 0; j < Main.GRID_SIZE; j++) {
+                cellsHolder[i][j] = getCellByAbsolutePos(new Position(i, j));
+            }
+        }
+        return cellsHolder;
+    }
 
+    public int[][] convertGridToBoard(){
+        if(cells == null){
+            cells = getGridCells();
+        }
+        final int[][] numsGrid = new int[9][9];
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 numsGrid[i][j] = cells[i][j].getNumber();
             }
         }
-
         return numsGrid;
     }
 
-    public Cell[][] getGridCells() {
-        if(cells != null){
-            return cells;
-        }
-
-        cells = new Cell[9][9];
-
-        for (int i = 0; i < Main.GRID_SIZE; i++) {
-            for (int j = 0; j < Main.GRID_SIZE; j++) {
-                cells[i][j] = getCellByAbsolutePos(new Position(i, j));
-            }
-        }
-
-        return cells;
-    }
-
-    public List<Cell> getCellsSolved(){
+    private Cell getCellByAbsolutePos(Position pos){ //wtf?
         if(cells == null){
-            cells = getGridCells();
+            return Arrays.stream(squares)
+                    .flatMap(Arrays::stream)
+                    .flatMap(sq ->
+                            Arrays.stream(sq.cells)
+                                    .flatMap(Arrays::stream)
+                    )
+                    .filter(cell -> cell.posInGrid.equals(pos))
+                    .findFirst()
+                    .orElseThrow();
         }
-
         return Arrays.stream(cells)
                 .flatMap(Arrays::stream)
-                .filter(Cell::isResolved)
-                .toList();
-    }
-
-    private Cell getCellByAbsolutePos(Position pos){
-        return Arrays.stream(squares)
-                .flatMap(Arrays::stream)
-                .flatMap(sq ->
-                        Arrays.stream(sq.cells)
-                            .flatMap(Arrays::stream)
-                )
-                .filter(cell -> cell.posInGrid.equals(pos))
+                .filter(c -> c.posInGrid.equals(pos))
                 .findFirst()
                 .orElseThrow();
     }
 
-    public void setCellsBySolvedBoard(int[][] tablero) {
+    public void setCellsBySolvedBoard(int[][] board) {
         if (cells == null) {
             cells = getGridCells();
         }
@@ -93,12 +84,12 @@ public class Grid {
             solvedCellColor = Color.GREEN;
         }
 
-        for (int rows = 0; rows < tablero.length; rows++) {
-            for (int cols = 0; cols < tablero[rows].length; cols++) {
+        for (int rows = 0; rows < board.length; rows++) {
+            for (int cols = 0; cols < board[rows].length; cols++) {
                 Cell cell = cells[rows][cols];
 
                 if(cell.getNumber() == 0){
-                    cell.setButtonText(tablero[rows][cols]);
+                    cell.setButtonText(board[rows][cols]);
                     cell.setButtonTextColor(solvedCellColor);
                     cell.setResolved(true);
                 }
@@ -109,14 +100,9 @@ public class Grid {
     public void setSolvedCellColor(Color solvedCellColor) {
         this.solvedCellColor = solvedCellColor;
 
-        List<Cell> solvedCells = getCellsSolved();
-
-        for(Cell c: solvedCells){
-            c.setButtonTextColor(solvedCellColor);
-        }
-    }
-
-    public Color getSolvedCellColor() {
-        return solvedCellColor;
+        Arrays.stream(cells)
+                .flatMap(Arrays::stream)
+                .filter(Cell::isResolved)
+                .forEach(cell -> cell.setButtonTextColor(solvedCellColor));
     }
 }

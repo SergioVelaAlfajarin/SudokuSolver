@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainView {
     private final JFrame frame;
@@ -23,8 +22,8 @@ public class MainView {
         this.grid = new Grid();
         this.menuBar = new JMenuBar();
 
-        initFrame();
         createMenuBar();
+        initFrame();
     }
 
     private void createMenuBar() {
@@ -75,6 +74,7 @@ public class MainView {
             }
         });
 
+        //ayuda menu ----------------------------------------------------
         JMenu ayudaMenu = new JMenu("Ayuda");
         ayudaMenu.addMouseListener(new MouseAdapter() {
             @Override
@@ -90,10 +90,6 @@ public class MainView {
         menuBar.add(ayudaMenu);
     }
 
-    private void mostrarAyuda() {
-        JOptionPane.showMessageDialog(frame, "Click izq: aumenta en 1 la celda.\nClick der: resta 1 a la celda.\nClick de la ruleta: resetea la celda a 0.");
-    }
-
     private void initFrame() {
         frame.setJMenuBar(menuBar);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,6 +97,14 @@ public class MainView {
         frame.setSize(Main.GRID_SIZE * 70, Main.GRID_SIZE * 70);
         frame.add(grid.panel);
         frame.setLocationRelativeTo(null);
+    }
+
+    private void mostrarAyuda() {
+        JOptionPane.showMessageDialog(frame, """
+                Click izq: aumenta en 1 la celda.
+                Click der: resta 1 a la celda.
+                Click de la ruleta: resetea la celda a 0."""
+        );
     }
 
     private void cleanGrid(){
@@ -112,34 +116,31 @@ public class MainView {
     }
 
     private void cleanSolved(){
-        List<Cell> solvedCells = grid.getCellsSolved();
-
-        for(Cell c: solvedCells){
-            c.setButtonText("");
-        }
-    }
-
-    private void genTestGrid(){
-
+        Arrays.stream(grid.getGridCells())
+                .flatMap(Arrays::stream)
+                .filter(Cell::isResolved)
+                .forEach(cell -> {
+                    cell.setButtonText("");
+                });
     }
 
     private void changeColor(){
-        Color color = JColorChooser.showDialog(frame,"Selecciona un color", grid.getSolvedCellColor());
+        Color color = JColorChooser.showDialog(
+                frame,"Selecciona un color", null
+        );
         grid.setSolvedCellColor(color);
     }
 
     private void calculateSudoku() {
-        var tablero = grid.generateGrid();
+        var board = grid.convertGridToBoard();
 
         Solver solver = new Solver();
-
-        solver.startSolver();
         try{
-            boolean isPossible = solver.solve(tablero);
+            boolean isPossible = solver.solve(board);
             if(!isPossible){
                 JOptionPane.showMessageDialog(frame, "El sudoku es imposible de resolver.");
             }else{
-                grid.setCellsBySolvedBoard(tablero);
+                grid.setCellsBySolvedBoard(board);
             }
         }catch (RuntimeException e){
             JOptionPane.showMessageDialog(frame, "Tiempo maximo de espera superado.");

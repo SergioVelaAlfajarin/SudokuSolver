@@ -28,11 +28,4 @@ public class Square {
             }
         }
     }
-
-    @Override
-    public String toString() {
-        return "Square{" +
-                "posInGrid=" + squarePosition +
-                '}';
-    }
 }
