@@ -5,7 +5,6 @@ import sva.ss.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.List;
 
 public class Grid {
     public final JPanel panel;
@@ -99,6 +98,10 @@ public class Grid {
 
     public void setSolvedCellColor(Color solvedCellColor) {
         this.solvedCellColor = solvedCellColor;
+
+        if(cells == null){
+            cells = getGridCells();
+        }
 
         Arrays.stream(cells)
                 .flatMap(Arrays::stream)

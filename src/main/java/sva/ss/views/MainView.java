@@ -28,7 +28,7 @@ public class MainView {
 
     private void createMenuBar() {
         //salir -------------------------------------------
-        JMenu exitMenu = new JMenu("Salir");
+        JMenu exitMenu = new JMenu("Exit");
         exitMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -37,8 +37,8 @@ public class MainView {
         });
 
         //limpiar -------------------------------------------
-        JMenu limpiarMenu = new JMenu("Limpiar");
-        JMenuItem limpiarTableroItem = new JMenuItem("Limipar todo");
+        JMenu limpiarMenu = new JMenu("Clean");
+        JMenuItem limpiarTableroItem = new JMenuItem("Clean all");
         limpiarTableroItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -47,7 +47,7 @@ public class MainView {
         });
         limpiarMenu.add(limpiarTableroItem);
 
-        JMenuItem limpiarSolucionesItem = new JMenuItem("Limpiar soluciones");
+        JMenuItem limpiarSolucionesItem = new JMenuItem("Clean solved cells");
         limpiarSolucionesItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -57,7 +57,7 @@ public class MainView {
         limpiarMenu.add(limpiarSolucionesItem);
 
         //calcular -------------------------------------------
-        JMenu calcularMenu = new JMenu("Calcular");
+        JMenu calcularMenu = new JMenu("Calculate");
         calcularMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -66,7 +66,7 @@ public class MainView {
         });
 
         //cambiar color -----------------------------------------------------------
-        JMenu cambiaColorMenu = new JMenu("Cambiar color");
+        JMenu cambiaColorMenu = new JMenu("Change color");
         cambiaColorMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -75,7 +75,7 @@ public class MainView {
         });
 
         //ayuda menu ----------------------------------------------------
-        JMenu ayudaMenu = new JMenu("Ayuda");
+        JMenu ayudaMenu = new JMenu("Help");
         ayudaMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -101,9 +101,9 @@ public class MainView {
 
     private void mostrarAyuda() {
         JOptionPane.showMessageDialog(frame, """
-                Click izq: aumenta en 1 la celda.
-                Click der: resta 1 a la celda.
-                Click de la ruleta: resetea la celda a 0."""
+                Left Click: add 1 to cell.
+                Right Click: substract 1 to cell.
+                Middle Click: reset cell to 0."""
         );
     }
 
@@ -122,7 +122,7 @@ public class MainView {
 
     private void changeColor(){
         Color color = JColorChooser.showDialog(
-                frame,"Selecciona un color", null
+                frame,"Pick a color", null
         );
         grid.setSolvedCellColor(color);
     }
@@ -134,13 +134,13 @@ public class MainView {
         try{
             boolean isPossible = solver.solve(board);
             if(!isPossible){
-                JOptionPane.showMessageDialog(frame, "El sudoku es imposible de resolver.");
+                JOptionPane.showMessageDialog(frame, "This sudoku has no solution.");
             }else{
                 grid.setCellsBySolvedBoard(board);
             }
         }catch (RuntimeException e){
-            JOptionPane.showMessageDialog(frame, "Tiempo maximo de espera superado.\n" +
-                    "Sudoku imposible.");
+            JOptionPane.showMessageDialog(frame, "Solver timed out.\n" +
+                    "Sudoku impossible to solve.");
         }
     }
 
