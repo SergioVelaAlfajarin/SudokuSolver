@@ -3,7 +3,25 @@ package sva.ss.solver.actualsolver;
 import sva.ss.Main;
 
 public class Solver {
+    public boolean keepTrying = true;
+
+    public void startSolver() {
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+                keepTrying = false;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
+    }
+
     public boolean solve(int[][] board) {
+        if(!keepTrying){
+            throw new RuntimeException();
+        }
+
         for(int row = 0; row < Main.GRID_SIZE; row++){
             for (int column = 0; column < Main.GRID_SIZE; column++) {
                 if(board[row][column] == 0){
@@ -24,7 +42,7 @@ public class Solver {
         return true;
     }
 
-    private static boolean isNumberInRow(int [][] board, int number, int row){
+    private boolean isNumberInRow(int [][] board, int number, int row){
         for (int i = 0; i < Main.GRID_SIZE; i++) {
             if(board[row][i] == number){
                 return true;
@@ -33,7 +51,7 @@ public class Solver {
         return false;
     }
 
-    private static boolean isNumberInColumn(int [][] board, int number, int col){
+    private boolean isNumberInColumn(int [][] board, int number, int col){
         for (int i = 0; i < Main.GRID_SIZE; i++) {
             if(board[i][col] == number){
                 return true;
@@ -42,7 +60,7 @@ public class Solver {
         return false;
     }
 
-    private static boolean isNumberInBox(int [][] board, int number, int row, int col){
+    private boolean isNumberInBox(int [][] board, int number, int row, int col){
         int localBoxRow = row - row % 3; //each box is 3 rows and 3 columns
         int localBoxCol = col - col % 3;
 
@@ -57,13 +75,13 @@ public class Solver {
         return false;
     }
 
-    private static boolean isValidPlacement(int [][] board, int number, int row, int col){
+    private boolean isValidPlacement(int [][] board, int number, int row, int col){
         return !isNumberInRow(board,number,row) &&
                 !isNumberInColumn(board,number,col) &&
                 !isNumberInBox(board,number,row,col);
     }
 
-    public void printBoard(int[][] board) {
+    public static void printBoard(int[][] board) {
         for (int i = 0; i < Main.GRID_SIZE; i++) {
             if(i % 3 == 0 && i != 0){
                 System.out.println("---------------------");
